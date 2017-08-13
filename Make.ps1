@@ -45,7 +45,8 @@ try
     .\Common\GetVisualStudioEnv.ps1 $VisualStudio $Architecture
     .\Icu-Build.ps1 $IcuDir $Output $Static $DebugBuild $AdditionalConfig
     .\Common\Zip.ps1 -OutputFile "$CurrentDir\$OutputName.zip" -Single $Output
-    Add-Content "$CurrentDir\Build.log" "Success: $OutputName}"
+    .\Common\PostBuildVisualStudio.ps1
+    Add-Content "$CurrentDir\Build.log" "Success: $OutputName"
 }
 catch
 {
