@@ -5,7 +5,7 @@ PARAM(
 
 $CurrentDir = ((Get-Item -Path ".\" -Verbose).FullName)
 
-$temp = .\Common\GetProcessOutput.ps1 "svn" "status --no-ignore" $Target
+$temp = .\Common\Process-StartAndGetOutput.ps1 "svn" "status --no-ignore" $Target
 [string[]]$FilesToDelete = $temp.Split([Environment]::NewLine)
 
 cd $Target

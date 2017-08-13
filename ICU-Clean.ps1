@@ -3,4 +3,4 @@ PARAM(
     [string]$Target
 )
 
-.\Common\Clean.ps1 $Target
+.\Common\Svn-Clean.ps1 $Target
