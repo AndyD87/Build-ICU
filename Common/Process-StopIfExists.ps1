@@ -7,5 +7,5 @@ $Processes = Get-Process $Name -ErrorAction SilentlyContinue
 
 foreach ($Process in $Processes)
 {
-    Stop-Process $Process
+    Stop-Process $Process -Force
 }

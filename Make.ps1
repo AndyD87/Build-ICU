@@ -45,10 +45,15 @@ try
     .\Common\VisualStudio-GetEnv.ps1 $VisualStudio $Architecture
     .\Icu-Build.ps1 $IcuDir $Output $Static $DebugBuild $AdditionalConfig
     .\Common\Zip.ps1 -OutputFile "$CurrentDir\$OutputName.zip" -Single $Output
-    .\Common\VisualStudio-PostBuild.ps1
     Add-Content "$CurrentDir\Build.log" "Success: $OutputName"
 }
-catch
+Catch
 {
     Add-Content "$CurrentDir\Build.log" "Failed: $OutputName"
+}
+Finally
+{
+    cd $PSScriptRoot
+    # Always Endup visual studio
+    .\Common\VisualStudio-PostBuild.ps1
 }
