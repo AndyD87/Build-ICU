@@ -15,7 +15,7 @@ if(-not [string]::IsNullOrEmpty($Single))
     $oFile = Get-Item $Single
     if($oFile.PSIsContainer)
     {
-        $cmd += "cf `"$OutputFile`""
+        $cmd += "cf `"$OutputFile`" --format=zip "
         $oFileList = Get-ChildItem $Single
         foreach($oFile in $oFileList)
         {
@@ -32,6 +32,7 @@ if(-not [string]::IsNullOrEmpty($Single))
 }
 elseif ($Array -ne $null -and $Array.Count -gt 0)
 {
+    $cmd += "cf `"$OutputFile`" --format=zip "
     foreach($Folder in $Array)
     {
         $cmd += "`"$Folder`" "
