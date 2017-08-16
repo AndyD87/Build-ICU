@@ -19,7 +19,7 @@
 
 $CurrentDir     = (Get-Item -Path ".\" -Verbose).FullName
 $OutputName     = "icu4c-$Version-${VisualStudio}-${Architecture}"
-$IcuDir         = "icu4c-$PSScriptRoot\$Version"
+$IcuDir         = "$PSScriptRoot\icu4c-$Version"
 if([string]::IsNullOrEmpty($OutputOverride))
 {
     $Output         = "$CurrentDir\$OutputName"
