@@ -10,29 +10,39 @@
     [Parameter(Mandatory=$false, Position=5)]
     [bool]$DebugBuild = $false,
     [Parameter(Mandatory=$false, Position=6)]
-    [string]$AdditionalConfig = ""
+    [string]$AdditionalConfig = "",
+    
+    [switch]$DoPackage,
+    [switch]$NoClean,
+    [string]$OverrideOutput
 )
 
 $CurrentDir     = (Get-Item -Path ".\" -Verbose).FullName
 $OutputName     = "icu4c-$Version-${VisualStudio}-${Architecture}"
-$Output         = "$CurrentDir\$OutputName"
-$IcuDir         = "$PSScriptRoot\$Version"
+$IcuDir         = "icu4c-$PSScriptRoot\$Version"
+if([string]::IsNullOrEmpty($OutputOverride))
+{
+    $Output         = "$CurrentDir\$OutputName"
+    if($Static)
+    {
+        $Output += "_static"
+        $OutputName += "_static"
+    }
+
+    if($DebugBuild)
+    {
+        $Output += "_debug"
+        $OutputName += "_debug"
+    }
+}
+else
+{
+    $Output     = $OverrideOutput
+}
 
 cd $PSScriptRoot
 
-if($Static)
-{
-    $Output += "_static"
-    $OutputName += "_static"
-}
-
-if($DebugBuild)
-{
-    $Output += "_debug"
-    $OutputName += "_debug"
-}
-
-try
+Try
 {
     if(-not (Test-Path $IcuDir))
     {
@@ -44,7 +54,10 @@ try
     }
     .\Common\VisualStudio-GetEnv.ps1 $VisualStudio $Architecture
     .\Icu-Build.ps1 $IcuDir $Output $Static $DebugBuild $AdditionalConfig
-    .\Common\Zip.ps1 -OutputFile "$CurrentDir\$OutputName.zip" -Single $Output
+    if($DoPackage)
+    {
+        .\Common\Zip.ps1 -OutputFile "$CurrentDir\$OutputName.zip" -Single $Output
+    }
     Add-Content "$CurrentDir\Build.log" "Success: $OutputName"
 }
 Catch
