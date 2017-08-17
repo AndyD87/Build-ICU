@@ -15,7 +15,7 @@ $pinfo.FileName = $Executable
 $pinfo.RedirectStandardOutput = $true
 $pinfo.UseShellExecute = $false
 $pinfo.Arguments = $Arguments
-$pinfo.WindowStyle =  [System.Diagnostics.ProcessWindowStyle]::Minimized
+#$pinfo.WindowStyle =  [System.Diagnostics.ProcessWindowStyle]::Minimized
 #$pinfo.CreateNoWindow = $true
 $pinfo.WorkingDirectory = $WorkingDir
 $p = New-Object System.Diagnostics.Process
@@ -24,11 +24,11 @@ $trash = $p.Start()
 $string=""
 while($p.HasExited -eq $false)
 {
-	Write-Output $p.StandardOutput.ReadLine();
+	Write-Host $p.StandardOutput.ReadLine();
 }
 while($p.StandardOutput.EndOfStream -eq $false)
 {
-	Write-Output $p.StandardOutput.ReadLine();
+	Write-Host $p.StandardOutput.ReadLine();
 }
 
 return $p.ExitCode

@@ -29,7 +29,7 @@ cd $IcuDir
 
 if((& "$PSScriptRoot\Common\Process-StartInline.ps1" "dos2unix" "*") -ne 0)
 {
-    throw "Failed: dos2unixasdf *"
+    throw "Failed: dos2unix *"
 }
 
 if((& "$PSScriptRoot\Common\Process-StartInline.ps1" "dos2unix" "-f configure") -ne 0)
