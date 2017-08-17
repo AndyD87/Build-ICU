@@ -15,14 +15,18 @@ Function CreateMakeSession
         [Parameter(Mandatory=$false, Position=4)]
         [bool]$Static = $false
     )
-    $sStatic = "`$false"
+    $sStatic = "0"
     if($Static)
     {
-        $sStatic = "`$true";
+        $sStatic = "1";
     }
+    $CurrentDir = ((Get-Item -Path ".\" -Verbose).FullName)
     $Cmd = "-command .\Make.ps1 -Version `"$Version`" -VisualStudio `"$VisualStudio`" -Architecture `"$Architecture`" -Static $sStatic"
-    $Cmd
-    Start-Process powershell.exe -ArgumentList $Cmd -Wait -PassThru
+    $Exitcode  = & "$PSScriptRoot\Common\Process-StartInline.ps1" "powershell.exe" $Cmd $CurrentDir
+    if($ExitCode -ne 0)
+    {
+        throw "Make command failed"
+    }
 }
   
 CreateMakeSession -Version $Version -VisualStudio "2017" -Architecture "x64" -Static $true

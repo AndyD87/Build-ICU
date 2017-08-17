@@ -17,27 +17,27 @@ Function PathToCygwinPath ([string] $Path)
     return ("/cygdrive/" + $Path.Replace(":", "").Replace("\", "/"))
 }
 
-[string]$CygwinDir  = "C:\Tools\cygwin64\bin"
+
 $CurrentDir          = ((Get-Item -Path ".\" -Verbose).FullName)
+
+& "$PSScriptRoot\Common\Cygwin-GetEnv.ps1"
 $OutputTargetCygwin  = PathToCygwinPath $OutputTarget
 $IcuDir             += "\source"
 
 $env:PATH=$env:PATH+";$CygwinDir"
 cd $IcuDir
 
-dos2unix *
-if($LASTEXITCODE -ne 0)
+if((& "$PSScriptRoot\Common\Process-StartInline.ps1" "dos2unix" "*") -ne 0)
 {
-    throw "Failed: dos2unix *"
+    throw "Failed: dos2unixasdf *"
 }
 
-dos2unix -f configure
-if($LASTEXITCODE -ne 0)
+if((& "$PSScriptRoot\Common\Process-StartInline.ps1" "dos2unix" "-f configure") -ne 0)
 {
-    throw "Failed: dos2unix -f configure"
+    throw "Failed: dos2unixasdf *"
 }
 
-$Cmd = "bash runConfigureICU Cygwin/MSVC -prefix=`"$OutputTargetCygwin`" "
+$Cmd = "runConfigureICU Cygwin/MSVC -prefix=`"$OutputTargetCygwin`" "
 if($Static)
 {
     $Cmd += "-enable-static -disable-shared "
@@ -51,20 +51,18 @@ if(-not [string]::IsNullOrEmpty($AdditionalConfig))
     $Cmd += $AdditionalConfig
 }
 
-cmd.exe /C $Cmd
-
-if($LASTEXITCODE -ne 0)
+if((& "$PSScriptRoot\Common\Process-StartInline.ps1" "bash" $cmd) -ne 0)
 {
-    throw "Failed: $Cmd"
+    Write-Output $IcuDir
+    throw "Configure icu failed: $Cmd"
 }
 
-make
-if($LASTEXITCODE -ne 0)
+if((& "$PSScriptRoot\Common\Process-StartInline.ps1" "make") -ne 0)
 {
     throw "Failed: make"
 }
-make install
-if($LASTEXITCODE -ne 0)
+
+if((& "$PSScriptRoot\Common\Process-StartInline.ps1" "make" "install") -ne 0)
 {
     throw "Failed: make install"
 }

@@ -17,10 +17,11 @@
     [string]$OverrideOutput
 )
 
+$ExitCode       = 0
 $CurrentDir     = (Get-Item -Path ".\" -Verbose).FullName
 $OutputName     = "icu4c-$Version-${VisualStudio}-${Architecture}"
 $IcuDir         = "$PSScriptRoot\icu4c-$Version"
-if([string]::IsNullOrEmpty($OutputOverride))
+if([string]::IsNullOrEmpty($OverrideOutput))
 {
     $Output         = "$CurrentDir\$OutputName"
     if($Static)
@@ -62,6 +63,8 @@ Try
 }
 Catch
 {
+    $ExitCode       = 1
+    Write-Output $_.Exception.Message
     Add-Content "$CurrentDir\Build.log" "Failed: $OutputName"
 }
 Finally
@@ -70,3 +73,5 @@ Finally
     # Always Endup visual studio
     .\Common\VisualStudio-PostBuild.ps1
 }
+
+exit $ExitCode

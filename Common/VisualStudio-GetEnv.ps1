@@ -25,7 +25,7 @@ switch($Architecture)
     default { throw "Wrong Architecture: $Architecture"}
 }
 
-Write-Host "Choosen Architecture for vcvarsall.bat: $Architecture"
+Write-Output "Choosen Architecture for vcvarsall.bat: $Architecture"
 
 switch($Version)
 {

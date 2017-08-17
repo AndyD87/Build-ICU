@@ -5,7 +5,7 @@ PARAM(
 if((Test-Path "C:\Tools\cygwin64\bin"))
 {
     $env:PATH += ";C:\Tools\cygwin64\bin"
-    Write-Host "Cygwin found at C:\Tools\cygwin64\bin"
+    Write-Output "Cygwin found at C:\Tools\cygwin64\bin"
 }
 elseif($Mandatory)
 {
@@ -13,5 +13,5 @@ elseif($Mandatory)
 }
 else
 {
-    Write-Host "No Cygwin found"
+    Write-Output "No Cygwin found"
 }

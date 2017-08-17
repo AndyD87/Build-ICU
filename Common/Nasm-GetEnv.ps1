@@ -5,7 +5,7 @@ PARAM(
 if((Test-Path "C:\Program Files\NASM"))
 {
     $env:PATH += "C:\Program Files\NASM"
-    Write-Host "NASM found at C:\Program Files\NASM"
+    Write-Output "NASM found at C:\Program Files\NASM"
 }
 elseif($Mandatory)
 {
@@ -13,5 +13,5 @@ elseif($Mandatory)
 }
 else
 {
-    Write-Host "No NASM found"
+    Write-Output "No NASM found"
 }

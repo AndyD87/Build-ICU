@@ -12,12 +12,13 @@ $Version = $Version.Replace(".", "-");
 
 if($Version -eq "latest")
 {
-    $cmd = "svn checkout http://source.icu-project.org/repos/icu/tags/$Version/icu4c `"$Target`""
+    $cmd = "svn checkout --quiet http://source.icu-project.org/repos/icu/tags/$Version/icu4c `"$Target`""
 }
 else
 {
-    $cmd = "svn checkout http://source.icu-project.org/repos/icu/tags/release-$Version/icu4c `"$Target`""
+    $cmd = "svn checkout --quiet http://source.icu-project.org/repos/icu/tags/release-$Version/icu4c `"$Target`""
 }
+Write-Output "Checkout svn quietly"
 cmd /C $cmd
 if($LASTEXITCODE -ne 0)
 {
