@@ -12,8 +12,8 @@
     [Parameter(Mandatory=$false, Position=6)]
     [string]$AdditionalConfig = "",
     
-    [switch]$DoPackage,
-    [switch]$NoClean,
+    [bool]$DoPackage,
+    [bool]$NoClean,
     [string]$OverrideOutput
 )
 
@@ -49,7 +49,7 @@ Try
     {
         .\ICU-Get.ps1 -Version $Version -Target $IcuDir
     }
-    else
+    elseif(-not $NoClean)
     {
         .\ICU-Clean.ps1 $IcuDir
     }
