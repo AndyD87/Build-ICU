@@ -3,7 +3,7 @@
 This build scripts are created for Powershell in Windows.
 Sources will be downloaded from original repository on https://icu-project.org
 
-Primarily this script was created for my BuildSystem wich is described [d](https:\\adirmeier.de).  
+Primarily this script was created for my BuildSystem wich is described [here](https://adirmeier.de/0_Blog/ID_157/index.html).  
 This scripts should work on other systems too.  
 If something goes wrong feel free to debug with *Powershell ISE* or write a Message.
 
