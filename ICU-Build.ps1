@@ -42,10 +42,23 @@ if(-not [string]::IsNullOrEmpty($AdditionalConfig))
     $Cmd += $AdditionalConfig
 }
 
+
+Write-Output "******************************"
+Write-Output "* Start Configuration"
+Write-Output "******************************"
 Process-StartInlineAndThrow "dos2unix" "*"
 Process-StartInlineAndThrow "dos2unix" "-f configure"
 Process-StartInlineAndThrow "bash" $cmd
+Process-StartInlineAndThrow ".\configure" "$Config"
+
+Write-Output "******************************"
+Write-Output "* Start Build"
+Write-Output "******************************"
 Process-StartInlineAndThrow "make"
+
+Write-Output "******************************"
+Write-Output "* Start Install"
+Write-Output "******************************"
 Process-StartInlineAndThrow "make" "install"
 
 cd $CurrentDir

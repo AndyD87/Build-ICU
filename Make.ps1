@@ -16,7 +16,12 @@ PARAM(
     [bool]$NoClean,
     [string]$OverrideOutput
 )
+# Include Common Powershell modules
 Import-Module "$PSScriptRoot\Common\All.ps1" -Force
+
+Write-Output "******************************"
+Write-Output "* Start ICU Build"
+Write-Output "******************************"
 
 $ExitCode       = 0
 $CurrentDir     = (Get-Item -Path ".\" -Verbose).FullName
@@ -46,14 +51,22 @@ cd $PSScriptRoot
 
 Try
 {
+    Write-Output "******************************"
     if(-not (Test-Path $IcuDir))
     {
+        Write-Output "* Download ICU $Version"
         .\ICU-Get.ps1 -Version $Version -Target $IcuDir
     }
     elseif(-not $NoClean)
     {
+        Write-Output "* Cleanup ICU"
         .\ICU-Clean.ps1 $IcuDir
     }
+    else
+    {
+        Write-Output "* NoClean"
+    }
+    Write-Output "******************************"
     VisualStudio-GetEnv $VisualStudio $Architecture
     .\Icu-Build.ps1 $IcuDir $Output $Static $DebugBuild $AdditionalConfig
     if($DoPackage)
