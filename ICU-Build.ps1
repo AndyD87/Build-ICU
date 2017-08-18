@@ -10,7 +10,7 @@ PARAM(
     [Parameter(Mandatory=$false, Position=5)]
     [string]$AdditionalConfig = ""
 )
-
+Import-Module "$PSScriptRoot\Common\All.ps1" -Force
 
 Function PathToCygwinPath ([string] $Path)
 {
@@ -20,22 +20,13 @@ Function PathToCygwinPath ([string] $Path)
 
 $CurrentDir          = ((Get-Item -Path ".\" -Verbose).FullName)
 
-& "$PSScriptRoot\Common\Cygwin-GetEnv.ps1"
+Cygwin-GetEnv
+
 $OutputTargetCygwin  = PathToCygwinPath $OutputTarget
 $IcuDir             += "\source"
 
 $env:PATH=$env:PATH+";$CygwinDir"
 cd $IcuDir
-
-if((& "$PSScriptRoot\Common\Process-StartInline.ps1" "dos2unix" "*") -ne 0)
-{
-    throw "Failed: dos2unix *"
-}
-
-if((& "$PSScriptRoot\Common\Process-StartInline.ps1" "dos2unix" "-f configure") -ne 0)
-{
-    throw "Failed: dos2unixasdf *"
-}
 
 $Cmd = "runConfigureICU Cygwin/MSVC -prefix=`"$OutputTargetCygwin`" "
 if($Static)
@@ -51,20 +42,10 @@ if(-not [string]::IsNullOrEmpty($AdditionalConfig))
     $Cmd += $AdditionalConfig
 }
 
-if((& "$PSScriptRoot\Common\Process-StartInline.ps1" "bash" $cmd) -ne 0)
-{
-    Write-Output $IcuDir
-    throw "Configure icu failed: $Cmd"
-}
-
-if((& "$PSScriptRoot\Common\Process-StartInline.ps1" "make") -ne 0)
-{
-    throw "Failed: make"
-}
-
-if((& "$PSScriptRoot\Common\Process-StartInline.ps1" "make" "install") -ne 0)
-{
-    throw "Failed: make install"
-}
+Process-StartInlineAndThrow "dos2unix" "*"
+Process-StartInlineAndThrow "dos2unix" "-f configure"
+Process-StartInlineAndThrow "bash" $cmd
+Process-StartInlineAndThrow "make"
+Process-StartInlineAndThrow "make" "install"
 
 cd $CurrentDir

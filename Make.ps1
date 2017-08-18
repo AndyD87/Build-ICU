@@ -1,4 +1,4 @@
-﻿PARAM(
+PARAM(
     [Parameter(Mandatory=$true, Position=1)]
     [string]$VisualStudio,
     [Parameter(Mandatory=$true, Position=2)]
@@ -16,6 +16,7 @@
     [bool]$NoClean,
     [string]$OverrideOutput
 )
+Import-Module "$PSScriptRoot\Common\All.ps1" -Force
 
 $ExitCode       = 0
 $CurrentDir     = (Get-Item -Path ".\" -Verbose).FullName
@@ -53,11 +54,11 @@ Try
     {
         .\ICU-Clean.ps1 $IcuDir
     }
-    .\Common\VisualStudio-GetEnv.ps1 $VisualStudio $Architecture
+    VisualStudio-GetEnv $VisualStudio $Architecture
     .\Icu-Build.ps1 $IcuDir $Output $Static $DebugBuild $AdditionalConfig
     if($DoPackage)
     {
-        .\Common\Zip.ps1 -OutputFile "$CurrentDir\$OutputName.zip" -Single $Output
+        Compress-Zip -OutputFile "$CurrentDir\$OutputName.zip" -Single $Output
     }
     Add-Content "$CurrentDir\Build.log" "Success: $OutputName"
 }
@@ -71,7 +72,7 @@ Finally
 {
     cd $PSScriptRoot
     # Always Endup visual studio
-    .\Common\VisualStudio-PostBuild.ps1
+    VisualStudio-PostBuild
 }
 
 exit $ExitCode

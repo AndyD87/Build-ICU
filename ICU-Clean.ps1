@@ -2,5 +2,6 @@ PARAM(
     [Parameter(Mandatory=$true, Position=1)]
     [string]$Target
 )
+Import-Module "$PSScriptRoot\Common\Svn.ps1" -Force
 
-.\Common\Svn-Clean.ps1 $Target
+Svn-Clean $Target

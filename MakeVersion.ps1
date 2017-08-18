@@ -2,6 +2,7 @@ PARAM(
     [Parameter(Mandatory=$false, Position=1)]
     [string]$Version = "latest"
 )
+Import-Module "$PSScriptRoot\Common\All.ps1" -Force
 
 Function CreateMakeSession
 {
@@ -22,7 +23,7 @@ Function CreateMakeSession
     }
     $CurrentDir = ((Get-Item -Path ".\" -Verbose).FullName)
     $Cmd = "-command .\Make.ps1 -Version `"$Version`" -VisualStudio `"$VisualStudio`" -Architecture `"$Architecture`" -Static $sStatic"
-    $Exitcode  = & "$PSScriptRoot\Common\Process-StartInline.ps1" "powershell.exe" $Cmd $CurrentDir
+    $Exitcode  = Process-StartInline "powershell.exe" $Cmd $CurrentDir
     if($ExitCode -ne 0)
     {
         throw "Make command failed"
