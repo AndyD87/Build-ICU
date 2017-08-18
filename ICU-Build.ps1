@@ -49,7 +49,6 @@ Write-Output "******************************"
 Process-StartInlineAndThrow "dos2unix" "*"
 Process-StartInlineAndThrow "dos2unix" "-f configure"
 Process-StartInlineAndThrow "bash" $cmd
-Process-StartInlineAndThrow ".\configure" "$Config"
 
 Write-Output "******************************"
 Write-Output "* Start Build"
