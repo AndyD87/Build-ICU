@@ -9,10 +9,19 @@ If something goes wrong feel free to debug with *Powershell ISE* or write a Mess
 
 ## Requirements
 
- - Visual Studio
- - Cmake (for creating zip)
- - Cygwin with binutils, make, bash
- - Subversion for Commandline
+Mandatory Requirements:
+ - Git
+ - Visual Studio 2012/2013/2015/2017
+ - Cmake (for working with Zip-Files)
+ - Cygwin
+
+Recommended Requirements:
+ - Python 2.7
+    Common Tools will download a Portable Version of WinPython if not available
+ - Perl
+    Common Scripts will download a Portable Version of StrawberryPerl if not available
+ - Subversion: Required for ICU
+    Common Scripts will download a Portable Version of Subversion if not available
 
 ## How to build
 
