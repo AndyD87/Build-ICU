@@ -4,4 +4,6 @@ PARAM(
 )
 Import-Module "$PSScriptRoot\Common\Svn.ps1" -Force
 
+Svn-GetEnv -Mandatory
+
 Svn-Clean $Target

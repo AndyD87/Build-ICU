@@ -20,7 +20,7 @@ Function PathToCygwinPath ([string] $Path)
 
 $CurrentDir          = ((Get-Item -Path ".\" -Verbose).FullName)
 
-Cygwin-GetEnv
+Cygwin-GetEnv -Mandatory
 
 $OutputTargetCygwin  = PathToCygwinPath $OutputTarget
 $IcuDir             += "\source"
