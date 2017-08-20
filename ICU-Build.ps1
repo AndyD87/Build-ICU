@@ -25,7 +25,6 @@ Cygwin-GetEnv -Mandatory
 $OutputTargetCygwin  = PathToCygwinPath $OutputTarget
 $IcuDir             += "\source"
 
-$env:PATH=$env:PATH+";$CygwinDir"
 cd $IcuDir
 
 $Cmd = "runConfigureICU Cygwin/MSVC -prefix=`"$OutputTargetCygwin`" "
