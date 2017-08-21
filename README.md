@@ -39,3 +39,14 @@ Options (bold are mandatory):
  - StaticRuntime: $true/$false (default: $false)
  - AdditionalConfig: String to append on configure command (default: "")
  
+## Output Format
+
+The name of the output folder will be generated as follows:
+
+    icu-$Version-$VisualStudioYear-$Architecture[_static][_debug][_MT]
+
+Conditions for Postfixes:
+ - **_static**: will be set if *-Static* is enabled
+ - **_debug**: will be set if *-DebugBuild* is enabled
+ - **_MT**: will be set if *-StaticRuntime* is enabled
+ 
