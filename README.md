@@ -16,11 +16,11 @@ Mandatory Requirements:
  - Cygwin
 
 Recommended Requirements:
- - Python 2.7
+ - Python 2.7  
     Common Tools will download a Portable Version of WinPython if not available
- - Perl
+ - Perl  
     Common Scripts will download a Portable Version of StrawberryPerl if not available
- - Subversion: Required for ICU
+ - Subversion: Required for ICU  
     Common Scripts will download a Portable Version of Subversion if not available
 
 ## How to build
