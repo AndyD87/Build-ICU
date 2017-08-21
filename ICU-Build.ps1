@@ -8,6 +8,8 @@ PARAM(
     [Parameter(Mandatory=$false, Position=4)]
     [bool]$DebugBuild = $false,
     [Parameter(Mandatory=$false, Position=5)]
+    [bool]$StaticRuntime = $false,
+    [Parameter(Mandatory=$false, Position=6)]
     [string]$AdditionalConfig = ""
 )
 Import-Module "$PSScriptRoot\Common\All.ps1" -Force
@@ -31,6 +33,10 @@ $Cmd = "runConfigureICU Cygwin/MSVC -prefix=`"$OutputTargetCygwin`" "
 if($Static)
 {
     $Cmd += "-enable-static -disable-shared "
+}
+if($StaticRuntime)
+{
+    (Get-Content runConfigureICU) |  Foreach-Object {$_ -Replace '/MD','/MT'}  | Out-File runConfigureICU
 }
 if($DebugBuild)
 {

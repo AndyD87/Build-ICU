@@ -34,6 +34,8 @@ Options (bold are mandatory):
  - **Architectrue**: x64/x86
  - Version: Version of ICU (default: latest)
  - Static: $true/$false (default: $false)
- - Debug: $true/$false (default: $false)
+   It will rewrite runConfigureICU to build with static runtime too.
+ - DebugBuild: $true/$false (default: $false)
+ - StaticRuntime: $true/$false (default: $false)
  - AdditionalConfig: String to append on configure command (default: "")
  

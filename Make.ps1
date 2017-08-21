@@ -10,6 +10,8 @@ PARAM(
     [Parameter(Mandatory=$false, Position=5)]
     [bool]$DebugBuild = $false,
     [Parameter(Mandatory=$false, Position=6)]
+    [bool]$StaticRuntime = $false,
+    [Parameter(Mandatory=$false, Position=7)]
     [string]$AdditionalConfig = "",
     
     [bool]$DoPackage,
@@ -25,8 +27,8 @@ Write-Output "******************************"
 
 $ExitCode       = 0
 $CurrentDir     = (Get-Item -Path ".\" -Verbose).FullName
-$OutputName     = "icu4c-$Version-${VisualStudio}-${Architecture}"
-$IcuDir         = "$PSScriptRoot\icu4c-$Version"
+$OutputName     = "icu-$Version-${VisualStudio}-${Architecture}"
+$IcuDir         = "$PSScriptRoot\icu-$Version"
 if([string]::IsNullOrEmpty($OverrideOutput))
 {
     $Output         = "$CurrentDir\$OutputName"
@@ -40,6 +42,12 @@ if([string]::IsNullOrEmpty($OverrideOutput))
     {
         $Output += "_debug"
         $OutputName += "_debug"
+    }
+
+    if($StaticRuntime)
+    {
+        $Output += "_MT"
+        $OutputName += "_MT"
     }
 }
 else
@@ -55,20 +63,23 @@ Try
     if(-not (Test-Path $IcuDir))
     {
         Write-Output "* Download ICU $Version"
+        Write-Output "******************************"
         .\ICU-Get.ps1 -Version $Version -Target $IcuDir
     }
     elseif(-not $NoClean)
     {
         Write-Output "* Cleanup ICU"
+        Write-Output "******************************"
         .\ICU-Clean.ps1 $IcuDir
     }
     else
     {
         Write-Output "* NoClean"
+        Write-Output "******************************"
     }
-    Write-Output "******************************"
+
     VisualStudio-GetEnv $VisualStudio $Architecture
-    .\Icu-Build.ps1 $IcuDir $Output $Static $DebugBuild $AdditionalConfig
+    .\Icu-Build.ps1 $IcuDir $Output $Static $DebugBuild -StaticRuntime $StaticRuntime -AdditionalConfig $AdditionalConfig
     if($DoPackage)
     {
         Compress-Zip -OutputFile "$CurrentDir\$OutputName.zip" -Single $Output
